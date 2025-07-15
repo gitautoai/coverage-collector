@@ -2,7 +2,7 @@ import os
 
 import requests
 
-from models import RepoInfo
+from src.models import RepoInfo
 
 
 def get_top_repos(
