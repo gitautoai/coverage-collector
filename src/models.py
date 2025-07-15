@@ -15,8 +15,7 @@ class RepoInfo:
 class CoverageResult:
     repo: RepoInfo
     coverage_percentage: Optional[float]
-    lines_covered: Optional[int]
-    lines_total: Optional[int]
-    test_command: Optional[str]
+    total_lines: Optional[int]
+    source: Optional[str]
     error: Optional[str]
     timestamp: str
