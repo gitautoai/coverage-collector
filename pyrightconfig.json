@@ -1,0 +1,9 @@
+{
+  "exclude": [
+    "venv"
+  ],
+  "reportMissingTypeStubs": false,
+  "reportUnknownArgumentType": "none",
+  "reportUnknownVariableType": "none", 
+  "reportUnknownMemberType": "none"
+}

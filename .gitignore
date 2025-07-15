@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.mypy_cache/
+
+# Coverage results  
+coverage_results.json
+
+# Environment
+.env
+
+# IDE/Tools
+.claude/
