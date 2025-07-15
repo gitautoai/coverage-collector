@@ -139,7 +139,8 @@ def main():
                 "stars": r.repo.stars,
                 "language": r.repo.language,
                 "coverage": r.coverage_percentage,
-                "test_command": r.test_command,
+                "total_lines": r.total_lines,
+                "source": r.source,
                 "error": r.error,
                 "timestamp": r.timestamp,
             }

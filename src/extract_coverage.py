@@ -5,10 +5,11 @@ Extract coverage data from README files and coverage services
 import re
 from datetime import datetime
 from typing import Optional
+import os
 
 import requests
 
-from models import RepoInfo, CoverageResult
+from .models import RepoInfo, CoverageResult
 
 
 def extract_coverage_from_readme(repo: RepoInfo) -> Optional[float]:
@@ -140,9 +141,42 @@ def extract_coverage_from_coveralls(repo: RepoInfo) -> Optional[float]:
         return None
 
 
+def get_repo_lines_of_code(repo: RepoInfo) -> Optional[int]:
+    """Get total lines of code from GitHub API using language statistics"""
+    try:
+        # Get languages breakdown
+        url = f"https://api.github.com/repos/{repo.owner}/{repo.name}/languages"
+        headers = {}
+        token = os.getenv("GITHUB_TOKEN")
+        if token:
+            headers["Authorization"] = f"token {token}"
+
+        response = requests.get(url, headers=headers, timeout=30)
+        if response.status_code != 200:
+            return None
+
+        languages = response.json()
+
+        # GitHub provides bytes, not lines
+        # Rough estimation: average 40 bytes per line of code
+        total_bytes = sum(languages.values())
+        estimated_lines = total_bytes // 40
+
+        return estimated_lines
+
+    except Exception:
+        return None
+
+
 def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
     """Smart coverage extraction combining multiple sources"""
     timestamp = datetime.now().isoformat()
+
+    # Get total lines of code
+    print("  📊 Getting repository size...")
+    total_lines = get_repo_lines_of_code(repo)
+    if total_lines:
+        print(f"  ✓ Estimated {total_lines:,} lines of code")
 
     # Try README first
     print("  📖 Checking README for coverage...")
@@ -154,9 +188,8 @@ def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
         return CoverageResult(
             repo=repo,
             coverage_percentage=coverage,
-            lines_covered=None,
-            lines_total=None,
-            test_command=f"Found in {source}",
+            total_lines=total_lines,
+            source=source,
             error=None,
             timestamp=timestamp,
         )
@@ -171,9 +204,8 @@ def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
         return CoverageResult(
             repo=repo,
             coverage_percentage=coverage,
-            lines_covered=None,
-            lines_total=None,
-            test_command=f"Found on {source}",
+            total_lines=total_lines,
+            source=source,
             error=None,
             timestamp=timestamp,
         )
@@ -183,9 +215,8 @@ def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
     return CoverageResult(
         repo=repo,
         coverage_percentage=None,
-        lines_covered=None,
-        lines_total=None,
-        test_command=None,
+        total_lines=total_lines,
+        source=None,
         error="No coverage data found in README or Coveralls",
         timestamp=timestamp,
     )
