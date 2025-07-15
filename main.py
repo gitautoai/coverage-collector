@@ -5,9 +5,9 @@ Coverage Collector - Main entry point
 
 import json
 import sys
-from get_top_repos import get_top_repos
-from run_coverage import run_coverage
-from models import CoverageResult, RepoInfo
+from src.get_top_repos import get_top_repos
+from src.run_coverage import run_coverage
+from src.models import CoverageResult, RepoInfo
 
 
 def main():

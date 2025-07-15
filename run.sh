@@ -33,6 +33,6 @@ fi
 
 # Run the coverage collector
 echo "🏃 Running coverage collector..."
-python main.py "$@"
+PYTHONPATH="${PYTHONPATH}:$(pwd)" python main.py "$@"
 
 echo "✅ Done!"
