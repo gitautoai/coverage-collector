@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a GitHub OSS Coverage Collector that analyzes test coverage for popular open source repositories.
+This is a GitHub OSS Coverage Collector that extracts test coverage data from popular open source repositories by parsing README files and coverage service websites (like Coveralls.io and Codecov).
 
 ## Linting and Code Quality
 
@@ -75,8 +75,15 @@ git push
 ./run.sh 3
 ```
 
-## Known Issues
+## How It Works
 
-- React coverage parsing may be questionable (53% seems low)
-- Vue.js and TheAlgorithms/Python repos need better test command detection
-- Monorepo support needs improvement for accurate coverage measurement
+1. **README Parsing**: Extracts coverage from badges and text patterns in README.md files
+2. **Coveralls.io Fallback**: Scrapes coverage data from coveralls.io when README doesn't have it
+3. **Smart Badge Detection**: Handles dynamic shields.io badges by fetching actual SVG content
+
+## Approach Benefits
+
+- **Fast**: Seconds per repository instead of hours
+- **Accurate**: Uses the official coverage that maintainers display
+- **Scalable**: Can process hundreds of repos quickly
+- **No Dependencies**: No need to install project dependencies or run tests
