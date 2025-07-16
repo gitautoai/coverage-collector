@@ -5,7 +5,8 @@ venv/
 .mypy_cache/
 
 # Coverage results  
-coverage_results.json
+*.json
+*.csv
 
 # Environment
 .env

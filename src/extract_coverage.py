@@ -8,8 +8,12 @@ from typing import Optional
 import os
 
 import requests
+from dotenv import load_dotenv
 
-from .models import RepoInfo, CoverageResult
+from src.models import RepoInfo, CoverageResult
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def extract_coverage_from_readme(repo: RepoInfo) -> Optional[float]:
@@ -187,6 +191,7 @@ def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
         print(f"  ✓ Found {coverage}% coverage in README")
         return CoverageResult(
             repo=repo,
+            url=f"https://github.com/{repo.owner}/{repo.name}",
             coverage_percentage=coverage,
             total_lines=total_lines,
             source=source,
@@ -203,6 +208,7 @@ def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
         print(f"  ✓ Found {coverage}% coverage on Coveralls")
         return CoverageResult(
             repo=repo,
+            url=f"https://github.com/{repo.owner}/{repo.name}",
             coverage_percentage=coverage,
             total_lines=total_lines,
             source=source,
@@ -214,6 +220,7 @@ def extract_coverage_smart(repo: RepoInfo) -> CoverageResult:
     print("  ✗ No coverage data found")
     return CoverageResult(
         repo=repo,
+        url=f"https://github.com/{repo.owner}/{repo.name}",
         coverage_percentage=None,
         total_lines=total_lines,
         source=None,
