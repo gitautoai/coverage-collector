@@ -14,6 +14,7 @@ class RepoInfo:
 @dataclass
 class CoverageResult:
     repo: RepoInfo
+    url: str
     coverage_percentage: Optional[float]
     total_lines: Optional[int]
     source: Optional[str]
